@@ -18,33 +18,25 @@
 
 namespace bdm {
 
-auto set_param = [&](Param* param) {
-  param->simulation_time_step_ = 0.01; // default
-  param->simulation_max_displacement_ = 3.0; // default
-  param->run_mechanical_interactions_ = true;
-  param->export_visualization_ = true;
-  param->visualization_export_interval_ = 100;
-  param->visualize_sim_objects_["Cell"] = {"diameter_"};
-};
-
 inline int Simulate(int argc, const char** argv) {
-  Simulation simulation(argc, argv, set_param);
-
-  // Define initial model - in this example: single cell at origin
+  Simulation simulation(argc, argv);
   auto* rm = simulation.GetResourceManager();
 
   auto* cell0 = new Cell({0, 0, 0});
   cell0->SetDiameter(10);
-  cell0->SetMass(10);
+  cell0->SetMass(1);
   rm->push_back(cell0);
 
-  auto* cell1 = new Cell({2.5, 0, 0});
+  auto* cell1 = new Cell({5, 0, 0});
   cell1->SetDiameter(10);
-  cell1->SetMass(10);
+  cell1->SetMass(1);
   rm->push_back(cell1);
 
   // Run simulation for one timestep
-  simulation.GetScheduler()->Simulate(10000);
+  simulation.GetScheduler()->Simulate(25);
+
+  std::cout << "final distance: " << cell1->GetPosition()[0] - cell0->GetPosition()[0]
+            << std::endl;
 
   std::cout << "Simulation completed successfully!" << std::endl;
   return 0;
