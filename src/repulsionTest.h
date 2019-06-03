@@ -18,10 +18,7 @@
 
 namespace bdm {
 
-// Define compile time parameter
-BDM_CTPARAM() { BDM_CTPARAM_HEADER(); };
-
-auto set_param = [&](auto* param) {
+auto set_param = [&](Param* param) {
   param->simulation_time_step_ = 0.01; // default
   param->simulation_max_displacement_ = 3.0; // default
   param->run_mechanical_interactions_ = true;
@@ -31,19 +28,19 @@ auto set_param = [&](auto* param) {
 };
 
 inline int Simulate(int argc, const char** argv) {
-  Simulation<> simulation(argc, argv, set_param);
+  Simulation simulation(argc, argv, set_param);
 
   // Define initial model - in this example: single cell at origin
   auto* rm = simulation.GetResourceManager();
 
-  rm->template Reserve<Cell>(2);
-
-  Cell cell0({0, 0, 0});
-  cell0.SetDiameter(10);
+  auto* cell0 = new Cell({0, 0, 0});
+  cell0->SetDiameter(10);
+  cell0->SetMass(10);
   rm->push_back(cell0);
 
-  Cell cell1({2.5, 0, 0});
-  cell1.SetDiameter(10);
+  auto* cell1 = new Cell({2.5, 0, 0});
+  cell1->SetDiameter(10);
+  cell1->SetMass(10);
   rm->push_back(cell1);
 
   // Run simulation for one timestep
