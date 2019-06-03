@@ -1,0 +1,12 @@
+[simulation]
+simulation_time_step = 0.01 # default#
+simulation_max_displacement = 3.0 # default
+run_mechanical_interactions = true
+max_displacement = 3.0
+
+[visualization]
+export = false
+export_interval = 100
+
+    [[visualize_sim_object]]
+    name = "Cell"
